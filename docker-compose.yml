@@ -1,0 +1,17 @@
+name: telegram-phone-image-store
+services:
+  postgres:
+    image: postgres:alpine
+    container_name: my_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: image-photo-store
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
