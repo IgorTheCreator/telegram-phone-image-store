@@ -30,7 +30,8 @@ export class LinkService {
         },
       })
       return { link: user.link, phone: user.phone }
-    } catch (e) {
+    }
+    catch (e) {
       this.logger.error(e.message)
       throw new InternalServerErrorException('Something went wrong')
     }
@@ -55,7 +56,8 @@ export class LinkService {
       })
 
       return { success: true }
-    } catch (e) {
+    }
+    catch (e) {
       this.logger.error(e)
       throw new InternalServerErrorException('Something went wrong')
     }

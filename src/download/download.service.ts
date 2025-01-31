@@ -1,7 +1,8 @@
-import { UtilsService } from 'src/utils/utils.service'
+import { Buffer } from 'node:buffer'
 import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
-import { PhoneNumberDto, UpdateUserDto } from './download.dto'
 import { PrismaService } from 'src/prisma/prisma.service'
+import { UtilsService } from 'src/utils/utils.service'
+import { PhoneNumberDto, UpdateUserDto } from './download.dto'
 
 @Injectable()
 export class DownloadService {
@@ -41,11 +42,12 @@ export class DownloadService {
               userId: createdUser.id,
             },
           })
-        })
+        }),
       )
 
       return { success: true }
-    } catch (e) {
+    }
+    catch (e) {
       this.logger.error(e)
       throw new InternalServerErrorException('Something went wrong')
     }
@@ -88,11 +90,12 @@ export class DownloadService {
               userId: user.id,
             },
           })
-        })
+        }),
       )
 
       return { success: true }
-    } catch (e) {
+    }
+    catch (e) {
       this.logger.error(e.message)
       throw new InternalServerErrorException('Internal Server Error')
     }

@@ -1,7 +1,7 @@
 import { Controller, Delete, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
-import { LinkService } from './link.service'
 import { PhoneNumberDto } from './link.dto'
+import { LinkService } from './link.service'
 
 @Controller('link')
 export class LinkController {

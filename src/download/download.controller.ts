@@ -1,7 +1,7 @@
-import { DownloadService } from './download.service'
 import { Body, Controller, Param, Post, Put, UploadedFiles, UseInterceptors } from '@nestjs/common'
 import { FilesInterceptor } from '@nestjs/platform-express'
 import { PhoneNumberDto } from './download.dto'
+import { DownloadService } from './download.service'
 
 @Controller('download')
 export class DownloadController {
@@ -18,7 +18,7 @@ export class DownloadController {
   updateInfo(
     @UploadedFiles() files: Array<Express.Multer.File>,
     @Body() body: PhoneNumberDto,
-    @Param() param: PhoneNumberDto
+    @Param() param: PhoneNumberDto,
   ) {
     return this.downloadService.updateInfo(files, param, body)
   }
