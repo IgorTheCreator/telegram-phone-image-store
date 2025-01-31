@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsString } from 'class-validator'
+import { IsOptional, IsString } from 'class-validator'
 
 export class PhoneNumberDto {
   @ApiProperty({
@@ -9,4 +9,16 @@ export class PhoneNumberDto {
   })
   @IsString()
   phone: string
+}
+
+export class UpdateUserDto {
+  @ApiProperty({
+    description: 'Номер телефона',
+    pattern: '+7**********',
+    example: '+7**********',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  phone?: string
 }

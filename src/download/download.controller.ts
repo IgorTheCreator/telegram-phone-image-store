@@ -1,5 +1,5 @@
 import { DownloadService } from './download.service'
-import { Body, Controller, Post, UploadedFiles, UseInterceptors } from '@nestjs/common'
+import { Body, Controller, Param, Post, Put, UploadedFiles, UseInterceptors } from '@nestjs/common'
 import { FilesInterceptor } from '@nestjs/platform-express'
 import { PhoneNumberDto } from './download.dto'
 
@@ -9,7 +9,17 @@ export class DownloadController {
 
   @Post('/')
   @UseInterceptors(FilesInterceptor('files'))
-  dowlnloadInfo(@UploadedFiles() files: Array<Express.Multer.File>, @Body() phone: PhoneNumberDto) {
-    return this.downloadService.dowloadInfo(files, phone)
+  dowlnloadInfo(@UploadedFiles() files: Array<Express.Multer.File>, @Body() body: PhoneNumberDto) {
+    return this.downloadService.dowloadInfo(files, body)
+  }
+
+  @Put('/:phone')
+  @UseInterceptors(FilesInterceptor('files'))
+  updateInfo(
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @Body() body: PhoneNumberDto,
+    @Param() param: PhoneNumberDto
+  ) {
+    return this.downloadService.updateInfo(files, param, body)
   }
 }
