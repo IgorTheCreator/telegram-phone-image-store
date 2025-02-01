@@ -86,6 +86,9 @@ export class LinkService {
           phone: true,
         },
       })
+      if (!user) {
+        throw new BadRequestException('User does not exists')
+      }
 
       const qrcode = await this.utils.generateQRcode(user.link)
       const imageQRCode = qrcode.split(',')[1]
