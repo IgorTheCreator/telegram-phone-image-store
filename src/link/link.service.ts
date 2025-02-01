@@ -1,3 +1,4 @@
+import { Buffer } from 'node:buffer'
 import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { UtilsService } from 'src/utils/utils.service'
@@ -30,8 +31,7 @@ export class LinkService {
         },
       })
       return { link: user.link, phone: user.phone }
-    }
-    catch (e) {
+    } catch (e) {
       this.logger.error(e.message)
       throw new InternalServerErrorException('Something went wrong')
     }
@@ -56,9 +56,41 @@ export class LinkService {
       })
 
       return { success: true }
-    }
-    catch (e) {
+    } catch (e) {
       this.logger.error(e)
+      throw new InternalServerErrorException('Something went wrong')
+    }
+  }
+
+  async getQRCode(file: Express.Multer.File) {
+    try {
+      const base64 = file.buffer.toString('base64')
+      const hash = this.utils.sha256(base64)
+      const image = await this.prisma.image.findFirst({
+        where: {
+          hash,
+        },
+        select: {
+          userId: true,
+        },
+      })
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id: image.userId,
+        },
+        select: {
+          link: true,
+          phone: true,
+        },
+      })
+
+      const qrcode = await this.utils.generateQRcode(user.link)
+      const imageQRCode = qrcode.split(',')[1]
+      const imgBuffer = Buffer.from(imageQRCode, 'base64')
+
+      return imgBuffer
+    } catch (e) {
+      this.logger.error(e.message)
       throw new InternalServerErrorException('Something went wrong')
     }
   }
