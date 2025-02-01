@@ -30,6 +30,9 @@ export class LinkService {
           phone: true,
         },
       })
+      if (!user) {
+        throw new BadRequestException('User does not exists')
+      }
       return { link: user.link, phone: user.phone }
     } catch (e) {
       this.logger.error(e.message)
